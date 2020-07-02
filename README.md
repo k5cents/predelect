@@ -8,34 +8,35 @@ of various outcomes over time.
 [pi]: https://www.predictit.org/
 [api]:https://www.predictit.org/api/marketdata/all/
 
-There are three markets regarding the Presidential election:
+We are tracking individual and top line _election_ markets in three categories:
 
-1. Which party will win the U.S. presidential election? ([2721])
-2. What will be the Electoral College margin in the presidential election? ([6653])
-4. What will be the popular vote margin in the presidential election? ([6663])
+### Presidential
+
+1. [2721]: Which party will win the U.S. presidential election?
+2. [6653]: What will be the Electoral College margin in the presidential election? 
+3. [6663]: What will be the popular vote margin in the presidential election?
 
 [2721]: https://www.predictit.org/markets/detail/2721/
 [6653]: https://www.predictit.org/markets/detail/6653/
 [6663]: https://www.predictit.org/markets/detail/6663/
 
-There are many markets tracking the various Senate races:
+### Senate
 
-1. Which party will control the Senate after the election? ([4366])
-2. What will be the net change in Senate seats, by party? ([6670])
-3. Which U.S. Senate race will be won by the smallest margin? ([6737])
-4. Individual markets for Senate races (e.g., Maine ([5811]))
+1. [4366]: Which party will control the Senate after the election?
+2. [6670]: What will be the net change in Senate seats, by party?
+3. [6737]: Which U.S. Senate race will be won by the smallest margin?
+4. [5811]: Individual markets for Senate races (e.g., Maine)
 
 [4366]: https://www.predictit.org/markets/detail/4366/
 [6670]: https://www.predictit.org/markets/detail/6670/
 [6737]: https://www.predictit.org/markets/detail/6737/
 [5811]: https://www.predictit.org/markets/detail/5811/
-[5808]: https://www.predictit.org/markets/detail/5808/
 
-There are less markets regarding the generally uncompetitive House races:
+### House
 
-1. Which party will control the House after 2020 election? ([4365])
-2. How many House seats will Democrats win in the 2020 election? ([6669])
-3. Individual markets for House races (e.g., Soutch Carolina 1st ([6753]))
+1. [4365]: Which party will control the House after 2020 election?
+2. [6669]: How many House seats will Democrats win in the 2020 election?
+3. [6753]: Individual markets for House races (e.g., Soutch Carolina 1st)
 
 [4365]: https://www.predictit.org/markets/detail/4365/
 [6669]: https://www.predictit.org/markets/detail/6669/
@@ -51,4 +52,5 @@ Scraping is done with the [R language][rlang] and [predictr] package.
 # Data
 
 The 24 hour history of each of these markets is scraped every day at noon EST.
-Data is not hosted on GitHub but will be made availabe upon request.
+
+Historical data is not hosted on GitHub but will be made availabe upon request.
