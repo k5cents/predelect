@@ -35,10 +35,8 @@ for (i in seq_along(house_markets$mid)) {
 
 # top line ----------------------------------------------------------------
 
-party <- market_history(4365, hourly = TRUE, convert = FALSE)
-day <- min(unique(as_date(party$time)))
-write_csv(party, glue("data/house/party/house_party_{day}.csv"))
+party <- market_history(4365, hourly = TRUE, convert = FALSE) %>%
+  write_csv(glue("data/house/party/house_party_{today()}.csv"))
 
-dems <- market_history(6669, hourly = TRUE, convert = FALSE)
-day <- min(unique(as_date(dems$time)))
-write_csv(dems, glue("data/house/dems/house_ecv_{day}.csv"))
+dems <- market_history(6669, hourly = TRUE, convert = FALSE) %>%
+  write_csv(glue("data/house/dems/house_ecv_{today()}.csv"))

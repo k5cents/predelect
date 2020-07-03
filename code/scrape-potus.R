@@ -27,25 +27,21 @@ for (i in seq_along(ec_markets$mid)) {
     extract(market, "state", "([:upper:]{2}(?:-\\d{2})?)", FALSE) %>%
     relocate(state, .before = mid) %>%
     select(-market) -> s
-  day <- min(unique(as_date(s$time)))
   state <- str_remove_all(unique(s$state), "[:punct:]")
-  write_csv(s,  glue("data/potus/states/{state}_{day}.csv"))
+  write_csv(s,  glue("data/potus/states/{state}_{today()}.csv"))
   Sys.sleep(5); setTxtProgressBar(pb, i)
 }
 
 # top line ----------------------------------------------------------------
 
-party <- market_history(2721, hourly = TRUE, convert = FALSE)
-day <- min(unique(as_date(party$time)))
-write_csv(party, glue("data/potus/party/potus_party_{day}.csv"))
+party <- market_history(2721, hourly = TRUE, convert = FALSE) %>%
+  write_csv(glue("data/potus/party/potus_party_{today()}.csv"))
 
-margin <- market_history(6653, hourly = TRUE, convert = FALSE)
-day <- min(unique(as_date(margin$time)))
-write_csv(margin, glue("data/potus/margin/potus_ecv_{day}.csv"))
+margin <- market_history(6653, hourly = TRUE, convert = FALSE) %>%
+  write_csv(glue("data/potus/margin/potus_ecv_{today()}.csv"))
 
-popvote <- market_history(6663, hourly = TRUE, convert = FALSE)
-day <- min(unique(as_date(popvote$time)))
-write_csv(popvote, glue("data/potus/popvote/sen_popvote_{day}.csv"))
+popvote <- market_history(6663, hourly = TRUE, convert = FALSE) %>%
+  write_csv(glue("data/potus/popvote/sen_popvote_{today()}.csv"))
 
 
 
