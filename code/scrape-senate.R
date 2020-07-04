@@ -11,7 +11,7 @@ library(usa)
 
 # find relevant markets with regex
 sen_rx <- "^Which .* [:upper:]{2} Senate (race|special)\\?"
-sen_markets <- all_markets %>%
+sen_markets <- open_markets() %>%
   filter(market %>% str_detect(sen_rx)) %>%
   select(mid, market) %>%
   extract(market, "state", "([:upper:]{2})", FALSE) %>%
@@ -25,7 +25,7 @@ sen_markets <- all_markets %>%
 
 # Which party will win the XX Senate race?
 pb <- txtProgressBar(max = nrow(sen_markets), style = 3)
-for (i in seq_along(sen_markets$id)) {
+for (i in seq_along(sen_markets$mid)) {
   path <- glue("data/senate/states/{sen_markets$race[i]}_{today()}.csv")
   market_history(sen_markets$mid[i], hourly = TRUE) %>%
     mutate(race = sen_markets$race[i], .before = mid) %>%
