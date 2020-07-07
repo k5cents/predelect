@@ -5,7 +5,7 @@ library(glue)
 library(here)
 library(fs)
 
-data_dir <- dir_create(here("data", "potus"))
+prez_dir <- dir_create(here("data", "potus"))
 tnow <- format(floor_date(now(), "hour"), "%Y%m%d%H%M")
 message(now())
 
@@ -22,13 +22,13 @@ pm <- open_markets() %>%
   unite(race, race, code, sep = "-", na.rm = TRUE) %>%
   relocate(race, .before = mid) %>%
   arrange(race) %>%
-  write_csv(path(data_dir, "ec_markets.csv"))
+  write_csv(path(prez_dir, "ec_markets.csv"))
 
 # Which party will win XX in 2020?
-dir_create(path(data_dir, "states"))
+dir_create(path(prez_dir, "states"))
 pb <- txtProgressBar(max = nrow(pm), style = 3)
 for (i in seq_along(pm$mid)) {
-  path <- path(data_dir, "states", glue("{pm$race[i]}_{tnow}.csv"))
+  path <- path(prez_dir, "states", glue("{pm$race[i]}_{tnow}.csv"))
   market_history(pm$mid[[i]], hourly = TRUE) %>%
     mutate(race = pm$race[i], .before = mid) %>%
     select(-market) %>%
@@ -39,16 +39,19 @@ for (i in seq_along(pm$mid)) {
 # top line ----------------------------------------------------------------
 
 # Which party wins the Presidency in 2020?
-dir_create(path(data_dir, "party"))
-party <- market_history(2721, hourly = TRUE, convert = FALSE) %>%
-  write_csv(path(data_dir, "party", glue("potus_party_{tnow}.csv")))
+d <- dir_create(path(prez_dir, "party"))
+p <- path(d, glue("potus_party_{tnow}.csv"))
+party <- market_history(2721, hourly = TRUE, convert = FALSE)
+write_csv(party, p)
 
 # Electoral College margin of victory?
-dir_create(path(data_dir, "margin"))
-margin <- market_history(6653, hourly = TRUE, convert = FALSE) %>%
-  write_csv(path(data_dir, "margin", glue("potus_ecv_{tnow}.csv")))
+d <- dir_create(path(prez_dir, "margin"))
+p <- path(d, glue("potus_ecv_{tnow}.csv"))
+margin <- market_history(6653, hourly = TRUE, convert = FALSE)
+write_csv(margin, p)
 
 # Popular Vote margin of victory?
-dir_create(path(data_dir, "popvote"))
-popvote <- market_history(6663, hourly = TRUE, convert = FALSE) %>%
-  write_csv(path(data_dir, "popvote", glue("potus_popvote_{tnow}.csv")))
+d <- dir_create(path(prez_dir, "popvote"))
+p <- path(d, glue("potus_popvote_{tnow}.csv"))
+popvote <- market_history(6663, hourly = TRUE, convert = FALSE)
+write_csv(popvote, p)

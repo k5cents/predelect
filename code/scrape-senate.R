@@ -5,7 +5,7 @@ library(glue)
 library(here)
 library(fs)
 
-data_dir <- dir_create(here("data", "senate"))
+sen_dir <- dir_create(here("data", "senate"))
 tnow <- format(floor_date(now(), "hour"), "%Y%m%d%H%M")
 message(now())
 
@@ -23,13 +23,13 @@ sm <- open_markets() %>%
     .before = mid
   ) %>%
   select(-special, -state) %>%
-  write_csv(path(data_dir, "senate_markets.csv"))
+  write_csv(path(sen_dir, "senate_markets.csv"))
 
 # Which party will win the XX Senate race?
-dir_create(path(data_dir, "states"))
+dir_create(path(sen_dir, "states"))
 pb <- txtProgressBar(max = nrow(sm), style = 3)
 for (i in seq_along(sm$mid)) {
-  path <- path(data_dir, "states", glue("{sm$race[i]}_{tnow}.csv"))
+  path <- path(sen_dir, "states", glue("{sm$race[i]}_{tnow}.csv"))
   market_history(sm$mid[i], hourly = TRUE) %>%
     mutate(race = sm$race[i], .before = mid) %>%
     select(-market) %>%
@@ -40,16 +40,19 @@ for (i in seq_along(sm$mid)) {
 # top line ----------------------------------------------------------------
 
 # Who will control the Senate after 2020?
-dir_create(path(data_dir, "majority"))
-majority <- market_history(4366, hourly = TRUE) %>%
-  write_csv(path(data_dir, "majority", glue("sen_majority_{tnow}.csv")))
+d <- dir_create(path(sen_dir, "majority"))
+p <- path(d, glue("sen_majority_{tnow}.csv"))
+majority <- market_history(4366, hourly = TRUE)
+write_csv(majority, p)
 
 # Net change in Senate seats?
-dir_create(path(data_dir, "margin"))
-margin <- market_history(6670, hourly = TRUE) %>%
-  write_csv(path(data_dir, "margin", glue("sen_margin_{tnow}.csv")))
+d <- dir_create(path(sen_dir, "margin"))
+p <- path(d, glue("sen_margin_{tnow}.csv"))
+margin <- market_history(6670, hourly = TRUE)
+write_csv(margin, p)
 
 # Senate race with smallest MOV in 2020?
-dir_create(path(data_dir, "smallest"))
-smallest <- market_history(6737, hourly = TRUE) %>%
-  write_csv(path(data_dir, "smallest", glue("sen_small_{tnow}.csv")))
+d <- dir_create(path(sen_dir, "smallest"))
+p <- path(d, glue("sen_small_{tnow}.csv"))
+smallest <- market_history(6737, hourly = TRUE)
+write_csv(smallest, p)

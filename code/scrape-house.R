@@ -5,7 +5,7 @@ library(glue)
 library(here)
 library(fs)
 
-data_dir <- dir_create(here("data", "house"))
+house_dir <- dir_create(here("data", "house"))
 tnow <- format(floor_date(now(), "hour"), "%Y%m%d%H%M")
 message(now())
 
@@ -19,13 +19,13 @@ hm <- open_markets() %>%
   extract(market, "race", "([:upper:]{2}-\\d{2})", FALSE) %>%
   relocate(race, .before = mid) %>%
   arrange(race) %>%
-  write_csv(path(data_dir, "house_markets.csv"))
+  write_csv(path(house_dir, "house_markets.csv"))
 
 # download 24 hour history from each
-dir_create(path(data_dir, "states"))
+dir_create(path(house_dir, "states"))
 pb <- txtProgressBar(max = nrow(hm), style = 3)
 for (i in seq_along(hm$mid)) {
-  path <- path(data_dir, "states", glue("{hm$race[i]}_{tnow}.csv"))
+  path <- path(house_dir, "states", glue("{hm$race[i]}_{tnow}.csv"))
   market_history(hm$mid[i], hourly = TRUE) %>%
     mutate(race = hm$race[i], .before = mid) %>%
     select(-market) %>%
@@ -36,11 +36,13 @@ for (i in seq_along(hm$mid)) {
 # top line ----------------------------------------------------------------
 
 # Who will control the House after 2020?
-dir_create(path(data_dir, "party"))
-party <- market_history(4365, hourly = TRUE, convert = FALSE) %>%
-  write_csv(path(data_dir, "party", glue("house_party_{tnow}.csv")))
+d <- dir_create(path(house_dir, "party"))
+p <- path(d, glue("house_party_{tnow}.csv"))
+party <- market_history(4365, hourly = TRUE, convert = FALSE)
+write_csv(party, p)
 
 # House seats won by Democrats in 2020?
-dir_create(path(data_dir, "dems"))
-dems <- market_history(6669, hourly = TRUE, convert = FALSE) %>%
-  write_csv(path(data_dir, "dems", glue("house_dems_{tnow}.csv")))
+d <- dir_create(path(house_dir, "dems"))
+p <- path(d, glue("house_dems_{tnow}.csv"))
+dems <- market_history(6669, hourly = TRUE, convert = FALSE)
+write_csv(dems, p)
