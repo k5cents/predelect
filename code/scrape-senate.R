@@ -7,6 +7,7 @@ library(fs)
 
 data_dir <- here("data", "senate")
 tnow <- format(floor_date(now(), "hour"), "%Y%m%d%H%M")
+message(now())
 
 # individual hourly -------------------------------------------------------
 

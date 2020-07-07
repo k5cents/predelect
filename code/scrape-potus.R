@@ -7,6 +7,7 @@ library(fs)
 
 data_dir <- here("data", "potus")
 tnow <- format(floor_date(now(), "hour"), "%Y%m%d%H%M")
+message(now())
 
 # individual hourly -------------------------------------------------------
 
@@ -47,5 +48,3 @@ margin <- market_history(6653, hourly = TRUE, convert = FALSE) %>%
 # Popular Vote margin of victory?
 popvote <- market_history(6663, hourly = TRUE, convert = FALSE) %>%
   write_csv(path(data_dir, "popvote", glue("potus_popvote_{tnow}.csv")))
-
-
