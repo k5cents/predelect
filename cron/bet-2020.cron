@@ -2,18 +2,18 @@
 ## id:   scrape-house
 ## tags: bet
 ## desc: Scrape PredicIt House markets
-0 0 * * * /opt/R/4.0.0/lib/R/bin/Rscript '/home/kiernan/Code/bet-2020/code/scrape-house.R'  >> '/home/kiernan/Code/bet-2020/cron/scrape-house.log' 2>&1
+0 0 * * * /usr/lib/R/bin/Rscript '/home/kiernan/Code/bet-2020/code/scrape-house.R'  >> '/home/kiernan/Code/bet-2020/cron/scrape-house.log' 2>&1
 
 ## cronR job
 ## id:   scrape-senate
 ## tags: bet
 ## desc: Scrape PredicIt Senate markets
-0 0 * * * /opt/R/4.0.0/lib/R/bin/Rscript '/home/kiernan/Code/bet-2020/code/scrape-senate.R'  >> '/home/kiernan/Code/bet-2020/cron/scrape-senate.log' 2>&1
+0 0 * * * /usr/lib/R/bin/Rscript '/home/kiernan/Code/bet-2020/code/scrape-senate.R'  >> '/home/kiernan/Code/bet-2020/cron/scrape-senate.log' 2>&1
 
 ## cronR job
 ## id:   scrape-potus
 ## tags: bet
 ## desc: Scrape PredicIt Presidential markets
-0 0 * * * /opt/R/4.0.0/lib/R/bin/Rscript '/home/kiernan/Code/bet-2020/code/scrape-potus.R'  >> '/home/kiernan/Code/bet-2020/cron/scrape-potus.log' 2>&1
+0 0 * * * /usr/lib/R/bin/Rscript '/home/kiernan/Code/bet-2020/code/scrape-potus.R'  >> '/home/kiernan/Code/bet-2020/cron/scrape-potus.log' 2>&1
 
  
