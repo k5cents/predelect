@@ -1,19 +1,20 @@
 library(tidyverse)
 library(lubridate)
 library(predictr)
-library(jsonlite)
-library(httr)
-library(rvest)
 library(glue)
-library(usa)
+library(here)
+library(fs)
+
+data_dir <- here("data", "senate")
+tnow <- format(floor_date(now(), "hour"), "%Y%m%d%H%M")
 
 # individual hourly -------------------------------------------------------
 
 # find relevant markets with regex
-sen_rx <- "^Which .* [:upper:]{2} Senate (race|special)\\?"
-sen_markets <- open_markets() %>%
-  filter(market %>% str_detect(sen_rx)) %>%
+sm <- open_markets() %>%
+  filter(str_detect(market, "^Which .* \\w{2} Senate (race|special)\\?")) %>%
   select(mid, market) %>%
+  distinct() %>%
   extract(market, "state", "([:upper:]{2})", FALSE) %>%
   mutate(
     special = str_detect(market, "special"),
@@ -21,14 +22,14 @@ sen_markets <- open_markets() %>%
     .before = mid
   ) %>%
   select(-special, -state) %>%
-  write_csv("data/senate/sen_markets.csv")
+  write_csv(path(data_dir, "senate_markets.csv"))
 
 # Which party will win the XX Senate race?
-pb <- txtProgressBar(max = nrow(sen_markets), style = 3)
-for (i in seq_along(sen_markets$mid)) {
-  path <- glue("data/senate/states/{sen_markets$race[i]}_{today()}.csv")
-  market_history(sen_markets$mid[i], hourly = TRUE) %>%
-    mutate(race = sen_markets$race[i], .before = mid) %>%
+pb <- txtProgressBar(max = nrow(sm), style = 3)
+for (i in seq_along(sm$mid)) {
+  path <- path(data_dir, "states", glue("{sm$race[i]}_{tnow}.csv"))
+  market_history(sm$mid[i], hourly = TRUE) %>%
+    mutate(race = sm$race[i], .before = mid) %>%
     select(-market) %>%
     write_csv(path)
   Sys.sleep(5); setTxtProgressBar(pb, i)
@@ -38,12 +39,12 @@ for (i in seq_along(sen_markets$mid)) {
 
 # Who will control the Senate after 2020?
 majority <- market_history(4366, hourly = TRUE) %>%
-  write_csv(glue("data/senate/majority/sen_majority_{today()}.csv"))
+  write_csv(path(data_dir, "majority", glue("sen_majority_{tnow}.csv")))
 
 # Net change in Senate seats?
 margin <- market_history(6670, hourly = TRUE) %>%
-  write_csv(glue("data/senate/margin/sen_margin_{today()}.csv"))
+  write_csv(path(data_dir, "margin", glue("sen_margin_{tnow}.csv")))
 
 # Senate race with smallest MOV in 2020?
 smallest <- market_history(6737, hourly = TRUE) %>%
-  write_csv(glue("data/senate/smallest/sen_small_{today()}.csv"))
+  write_csv(path(data_dir, "smallest", glue("sen_small_{tnow}.csv")))
