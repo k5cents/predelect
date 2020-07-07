@@ -1,10 +1,8 @@
-library(tidyverse)
-library(lubridate)
-library(predictr)
-library(glue)
-library(here)
-library(fs)
+# load packages
+pacman::p_load(readr, dplyr, tidyr, lubridate, stringr, here, fs, glue)
+pacman::p_load_gh("kiernann/predictr")
 
+# note where and when
 house_dir <- dir_create(here("data", "house"))
 tnow <- format(floor_date(now(), "hour"), "%Y%m%d%H%M")
 message(now())
@@ -21,28 +19,27 @@ hm <- open_markets() %>%
   arrange(race) %>%
   write_csv(path(house_dir, "house_markets.csv"))
 
-# download 24 hour history from each
+# 'Which party will win XX-DD?'
 dir_create(path(house_dir, "states"))
-pb <- txtProgressBar(max = nrow(hm), style = 3)
 for (i in seq_along(hm$mid)) {
   path <- path(house_dir, "states", glue("{hm$race[i]}_{tnow}.csv"))
   market_history(hm$mid[i], hourly = TRUE) %>%
     mutate(race = hm$race[i], .before = mid) %>%
     select(-market) %>%
     write_csv(path)
-  Sys.sleep(5); setTxtProgressBar(pb, i)
+  Sys.sleep(5)
 }
 
 # top line ----------------------------------------------------------------
 
-# Who will control the House after 2020?
+# 'Who will control the House after 2020?'
 d <- dir_create(path(house_dir, "party"))
 p <- path(d, glue("house_party_{tnow}.csv"))
-party <- market_history(4365, hourly = TRUE, convert = FALSE)
+party <- market_history(4365, hourly = TRUE)
 write_csv(party, p)
 
-# House seats won by Democrats in 2020?
+# 'House seats won by Democrats in 2020?'
 d <- dir_create(path(house_dir, "dems"))
 p <- path(d, glue("house_dems_{tnow}.csv"))
-dems <- market_history(6669, hourly = TRUE, convert = FALSE)
+dems <- market_history(6669, hourly = TRUE)
 write_csv(dems, p)

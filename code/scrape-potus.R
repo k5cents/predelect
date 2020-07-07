@@ -1,10 +1,8 @@
-library(tidyverse)
-library(lubridate)
-library(predictr)
-library(glue)
-library(here)
-library(fs)
+# load packages
+pacman::p_load(readr, dplyr, tidyr, lubridate, stringr, here, fs, glue)
+pacman::p_load_gh("kiernann/predictr")
 
+# note where and when
 prez_dir <- dir_create(here("data", "potus"))
 tnow <- format(floor_date(now(), "hour"), "%Y%m%d%H%M")
 message(now())
@@ -24,34 +22,33 @@ pm <- open_markets() %>%
   arrange(race) %>%
   write_csv(path(prez_dir, "ec_markets.csv"))
 
-# Which party will win XX in 2020?
+# 'Which party will win XX in 2020?'
 dir_create(path(prez_dir, "states"))
-pb <- txtProgressBar(max = nrow(pm), style = 3)
 for (i in seq_along(pm$mid)) {
   path <- path(prez_dir, "states", glue("{pm$race[i]}_{tnow}.csv"))
   market_history(pm$mid[[i]], hourly = TRUE) %>%
     mutate(race = pm$race[i], .before = mid) %>%
     select(-market) %>%
     write_csv(path)
-  Sys.sleep(5); setTxtProgressBar(pb, i)
+  Sys.sleep(5)
 }
 
 # top line ----------------------------------------------------------------
 
-# Which party wins the Presidency in 2020?
+# 'Which party wins the Presidency in 2020?'
 d <- dir_create(path(prez_dir, "party"))
 p <- path(d, glue("potus_party_{tnow}.csv"))
-party <- market_history(2721, hourly = TRUE, convert = FALSE)
+party <- market_history(2721, hourly = TRUE)
 write_csv(party, p)
 
-# Electoral College margin of victory?
+# 'Electoral College margin of victory?'
 d <- dir_create(path(prez_dir, "margin"))
 p <- path(d, glue("potus_ecv_{tnow}.csv"))
-margin <- market_history(6653, hourly = TRUE, convert = FALSE)
+margin <- market_history(6653, hourly = TRUE)
 write_csv(margin, p)
 
-# Popular Vote margin of victory?
+# 'Popular Vote margin of victory?'
 d <- dir_create(path(prez_dir, "popvote"))
 p <- path(d, glue("potus_popvote_{tnow}.csv"))
-popvote <- market_history(6663, hourly = TRUE, convert = FALSE)
+popvote <- market_history(6663, hourly = TRUE)
 write_csv(popvote, p)

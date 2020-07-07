@@ -1,10 +1,8 @@
-library(tidyverse)
-library(lubridate)
-library(predictr)
-library(glue)
-library(here)
-library(fs)
+# load packages
+pacman::p_load(readr, dplyr, tidyr, lubridate, stringr, here, fs, glue)
+pacman::p_load_gh("kiernann/predictr")
 
+# note where and when
 sen_dir <- dir_create(here("data", "senate"))
 tnow <- format(floor_date(now(), "hour"), "%Y%m%d%H%M")
 message(now())
@@ -25,33 +23,32 @@ sm <- open_markets() %>%
   select(-special, -state) %>%
   write_csv(path(sen_dir, "senate_markets.csv"))
 
-# Which party will win the XX Senate race?
+# 'Which party will win the XX Senate race?'
 dir_create(path(sen_dir, "states"))
-pb <- txtProgressBar(max = nrow(sm), style = 3)
 for (i in seq_along(sm$mid)) {
   path <- path(sen_dir, "states", glue("{sm$race[i]}_{tnow}.csv"))
   market_history(sm$mid[i], hourly = TRUE) %>%
     mutate(race = sm$race[i], .before = mid) %>%
     select(-market) %>%
     write_csv(path)
-  Sys.sleep(5); setTxtProgressBar(pb, i)
+  Sys.sleep(5); message(sm$race[i])
 }
 
 # top line ----------------------------------------------------------------
 
-# Who will control the Senate after 2020?
+# 'Who will control the Senate after 2020?'
 d <- dir_create(path(sen_dir, "majority"))
 p <- path(d, glue("sen_majority_{tnow}.csv"))
 majority <- market_history(4366, hourly = TRUE)
 write_csv(majority, p)
 
-# Net change in Senate seats?
+# 'Net change in Senate seats?'
 d <- dir_create(path(sen_dir, "margin"))
 p <- path(d, glue("sen_margin_{tnow}.csv"))
 margin <- market_history(6670, hourly = TRUE)
 write_csv(margin, p)
 
-# Senate race with smallest MOV in 2020?
+# 'Senate race with smallest MOV in 2020?'
 d <- dir_create(path(sen_dir, "smallest"))
 p <- path(d, glue("sen_small_{tnow}.csv"))
 smallest <- market_history(6737, hourly = TRUE)
