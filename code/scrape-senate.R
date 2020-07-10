@@ -25,7 +25,7 @@ for (i in seq_along(sm$mid)) {
     mutate(race = sm$race[i], .before = mid) %>%
     select(-market) %>%
     write_csv(path)
-  Sys.sleep(30)
+  Sys.sleep(runif(1, 20, 30))
 }
 
 # top line ----------------------------------------------------------------
