@@ -1,16 +1,10 @@
-# load packages
-pacman::p_load(readr, dplyr, tidyr, lubridate, stringr, here, fs, glue)
-pacman::p_load_gh("kiernann/predictr")
-
 # note where and when
 prez_dir <- dir_create(here("data", "potus"))
-tnow <- format(floor_date(now(), "hour"), "%Y%m%d%H%M")
-message(now())
 
 # individual hourly -------------------------------------------------------
 
 # find relevant markets with regex
-pm <- open_markets() %>%
+pm <- all_markets %>%
   filter(str_detect(market, "Which party will win \\w{2}(.*)? (in )?2020")) %>%
   select(mid, market) %>%
   distinct() %>%
@@ -30,7 +24,7 @@ for (i in seq_along(pm$mid)) {
     mutate(race = pm$race[i], .before = mid) %>%
     select(-market) %>%
     write_csv(path)
-  Sys.sleep(5)
+  Sys.sleep(30)
 }
 
 # top line ----------------------------------------------------------------
@@ -52,3 +46,7 @@ d <- dir_create(path(prez_dir, "popvote"))
 p <- path(d, glue("potus_popvote_{tnow}.csv"))
 popvote <- market_history(6663, hourly = TRUE)
 write_csv(popvote, p)
+
+# -------------------------------------------------------------------------
+
+message(paste(now(), "potus success"))

@@ -2,40 +2,20 @@ library(cronR)
 library(here)
 library(fs)
 
-cron_add(
-  command = cron_rscript(
-    rscript = here("code", "scrape-house.R"),
-    rscript_log = here("cron", "scrape-house.log")
-  ),
-  frequency = "daily",
-  at = "12AM",
-  id = "scrape-house",
-  tags = "bet",
-  description = "Scrape PredicIt House markets",
+cmd = cron_rscript(
+  rscript = here("code", "run-scrape.R"),
+  rscript_log = here("cron", "bet-2020.log"),
+  cmd = "/usr/lib/R/bin/Rscript",
+  log_append = TRUE
 )
 
 cron_add(
-  command = cron_rscript(
-    rscript = here("code", "scrape-senate.R"),
-    rscript_log = here("cron", "scrape-senate.log")
-  ),
+  command = cmd,
   frequency = "daily",
   at = "12AM",
-  id = "scrape-senate",
-  tags = "bet",
-  description = "Scrape PredicIt Senate markets",
-)
-
-cron_add(
-  command = cron_rscript(
-    rscript = here("code", "scrape-potus.R"),
-    rscript_log = here("cron", "scrape-potus.log")
-  ),
-  frequency = "daily",
-  at = "12AM",
-  id = "scrape-potus",
-  tags = "bet",
-  description = "Scrape PredicIt Presidential markets",
+  id = "bet-2020",
+  tags = "scrape",
+  description = "Scrape PredicIt hourly markets",
 )
 
 # save all to crontab

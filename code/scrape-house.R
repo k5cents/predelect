@@ -1,16 +1,10 @@
-# load packages
-pacman::p_load(readr, dplyr, tidyr, lubridate, stringr, here, fs, glue)
-pacman::p_load_gh("kiernann/predictr")
-
 # note where and when
 house_dir <- dir_create(here("data", "house"))
-tnow <- format(floor_date(now(), "hour"), "%Y%m%d%H%M")
-message(now())
 
 # individual hourly -------------------------------------------------------
 
 # find relevant markets with regex
-hm <- open_markets() %>%
+hm <- all_markets %>%
   filter(str_detect(market, "Which party will win [:upper:]{2}-\\d{2}\\?")) %>%
   select(mid, market) %>%
   distinct() %>%
@@ -27,7 +21,7 @@ for (i in seq_along(hm$mid)) {
     mutate(race = hm$race[i], .before = mid) %>%
     select(-market) %>%
     write_csv(path)
-  Sys.sleep(5)
+  Sys.sleep(30)
 }
 
 # top line ----------------------------------------------------------------
@@ -43,3 +37,7 @@ d <- dir_create(path(house_dir, "dems"))
 p <- path(d, glue("house_dems_{tnow}.csv"))
 dems <- market_history(6669, hourly = TRUE)
 write_csv(dems, p)
+
+# -------------------------------------------------------------------------
+
+message(paste(now(), "house success"))
