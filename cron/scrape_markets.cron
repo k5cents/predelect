@@ -1,0 +1,7 @@
+## cronR job
+## id:   scrape-markets
+## tags: bet2020
+## desc: Scrape PredicIt hourly markets
+0 23 * * * /usr/lib/R/bin/Rscript '/home/kiernan/Code/bet-2020/code/scrape_markets.R'  >> '/home/kiernan/Code/bet-2020/cron/scrape_markets.log' 2>&1
+
+ 

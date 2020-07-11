@@ -1,7 +1,0 @@
-## cronR job
-## id:   bet-2020
-## tags: scrape
-## desc: Scrape PredicIt hourly markets
-0 0 * * * /usr/lib/R/bin/Rscript '/home/kiernan/Code/bet-2020/code/run-scrape.R'  >> '/home/kiernan/Code/bet-2020/cron/bet-2020.log' 2>&1
-
- 

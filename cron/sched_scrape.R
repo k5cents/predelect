@@ -6,9 +6,9 @@ library(fs)
 cron_clear(ask = FALSE)
 
 cmd = cron_rscript(
-  rscript = "~/Code/bet-2020/code/scrape_markets.R",
+  rscript = "/home/kiernan/Code/bet-2020/code/scrape_markets.R",
   # capture logging messages
-  rscript_log = "~/Code/bet-2020/cron/scrape_markets.log",
+  rscript_log = "/home/kiernan/Code/bet-2020/cron/scrape_markets.log",
   # bin found on pi and desktop
   cmd = "/usr/lib/R/bin/Rscript",
   log_append = TRUE
