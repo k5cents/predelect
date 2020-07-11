@@ -7,17 +7,16 @@
 # load packages
 pacman::p_load(readr, dplyr, tidyr, stringr, lubridate, here, fs, glue)
 pacman::p_load_gh("kiernann/predictr")
-Sys.sleep(60)
-
-# get all markets once
-all_markets <- distinct(select(open_markets(), 1:3))
 
 # note start time in log
 message(glue("# Begin:    {date()} -----------------------"))
+Sys.sleep(60)
+# get all markets once
+all_markets <- distinct(select(open_markets(), 1:3))
 
 # create and define path to data directory
-data_dir <- dir_create("~/Code/bet-2020/data/")
-race_dir <- dir_create( path(data_dir, "races"))
+data_dir <- dir_create(path_expand("~/Code/bet-2020/data/"))
+race_dir <- dir_create(path(data_dir, "races"))
 
 # house markets -----------------------------------------------------------
 
@@ -28,7 +27,7 @@ hm <- all_markets %>%
   extract(market, "race", "([:upper:]{2}-\\d{2})", FALSE) %>%
   arrange(race) %>%
   # overwrite file
-  write_csv(path(date_dir, "house_markets.csv"))
+  write_csv(path(data_dir, "house_markets.csv"))
 
 # 'Which party will win XX-DD?'
 for (i in seq_along(hm$mid)) {
@@ -72,7 +71,7 @@ sm <- all_markets %>%
     race = str_c(state, "-S", as.integer(special) + 2)
   ) %>%
   select(-special, -state) %>%
-  write_csv(path(date_dir, "senate_markets.csv"))
+  write_csv(path(data_dir, "senate_markets.csv"))
 
 # 'Which party will win the XX Senate race?'
 for (i in seq_along(sm$mid)) {
@@ -116,7 +115,7 @@ pm <- all_markets %>%
   mutate(code = if_else(str_detect(race, "-"), NA_character_, "P0")) %>%
   unite(race, race, code, sep = "-", na.rm = TRUE) %>%
   arrange(race) %>%
-  write_csv(path(date_dir, "potus_markets.csv"))
+  write_csv(path(data_dir, "potus_markets.csv"))
 
 # 'Which party will win XX in 2020?'
 for (i in seq_along(pm$mid)) {
