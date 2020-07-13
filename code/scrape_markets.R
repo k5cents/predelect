@@ -17,6 +17,7 @@ all_markets <- distinct(select(open_markets(), 1:3))
 # create and define path to data directory
 data_dir <- dir_create(path_expand("~/Code/bet-2020/data/"))
 race_dir <- dir_create(path(data_dir, "races"))
+extra_dir <- dir_create(path(data_dir, "extra"))
 
 # house markets -----------------------------------------------------------
 
@@ -38,23 +39,23 @@ for (i in seq_along(hm$mid)) {
     mutate(race = hm$race[i], .before = mid) %>%
     select(-market) %>%
     # append to existing file
-    write_csv(path, append = TRUE)
+    write_csv(path, append = file_exists(path))
   # wait a random time
-  Sys.sleep(runif(1, 20, 30))
+  Sys.sleep(runif(1, 20, 30)); gc()
 }
 
 # 'Who will control the House after 2020?'
 write_csv(
   # scrape single markets on house data
   x = market_history(4365, hourly = TRUE),
-  path = path(data_dir, "house_party.csv"),
+  path = path(extra_dir, "house_party.csv"),
   append = TRUE
 )
 
 # 'House seats won by Democrats in 2020?'
 write_csv(
   x = market_history(6669, hourly = TRUE),
-  path = path(data_dir, "house_dems.csv"),
+  path = path(extra_dir, "house_dems.csv"),
   append = TRUE
 )
 
@@ -79,28 +80,28 @@ for (i in seq_along(sm$mid)) {
   market_history(sm$mid[i], hourly = TRUE) %>%
     mutate(race = sm$race[i], .before = mid) %>%
     select(-market) %>%
-    write_csv(path, append = TRUE)
+    write_csv(path, append = file_exists(path))
   Sys.sleep(runif(1, 20, 30))
 }
 
 # 'Who will control the Senate after 2020?'
 write_csv(
   x = market_history(4366, hourly = TRUE),
-  path = path(data_dir, "sen_majority.csv"),
+  path = path(extra_dir, "sen_majority.csv"),
   append = TRUE
 )
 
 # 'Net change in Senate seats?'
 write_csv(
   x = market_history(6670, hourly = TRUE),
-  path = path(data_dir, "sen_margin.csv"),
+  path = path(extra_dir, "sen_margin.csv"),
   append = TRUE
 )
 
 # 'Senate race with smallest MOV in 2020?'
 write_csv(
   x = market_history(6737, hourly = TRUE),
-  path = path(data_dir, "sen_smallest.csv"),
+  path = path(extra_dir, "sen_smallest.csv"),
   append = TRUE
 )
 
@@ -123,28 +124,28 @@ for (i in seq_along(pm$mid)) {
   market_history(pm$mid[[i]], hourly = TRUE) %>%
     mutate(race = pm$race[i], .before = mid) %>%
     select(-market) %>%
-    write_csv(path)
+    write_csv(path, append = file_exists(path))
   Sys.sleep(runif(1, 20, 30))
 }
 
 # 'Which party wins the Presidency in 2020?'
 write_csv(
   x = market_history(2721, hourly = TRUE),
-  path = path(data_dir, "potus_party.csv"),
+  path = path(extra_dir, "potus_party.csv"),
   append = TRUE
 )
 
 # 'Electoral College margin of victory?'
 write_csv(
   x = market_history(6653, hourly = TRUE),
-  path = path(data_dir, "potus_college.csv"),
+  path = path(extra_dir, "potus_college.csv"),
   append = TRUE
 )
 
 # 'Popular Vote margin of victory?'
 write_csv(
   x = market_history(6663, hourly = TRUE),
-  path = path(data_dir, "potus_popvote.csv"),
+  path = path(extra_dir, "potus_popvote.csv"),
   append = TRUE
 )
 message(paste(nrow(pm) + 3, "potus markets complete", format(now(), "%H:%M")))
