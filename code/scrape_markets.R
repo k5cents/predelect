@@ -12,7 +12,9 @@ pacman::p_load_gh("kiernann/predictr")
 message(glue("# Begin:    {date()} -----------------------"))
 Sys.sleep(60)
 # get all markets once
-all_markets <- distinct(select(open_markets(), 1:3))
+all_markets <- open_markets(nest = FALSE)
+contracts <- select(all_markets, c(2, 4:5))
+all_markets <- distinct(select(all_markets, 1:3))
 
 # create and define path to data directory
 data_dir <- dir_create(path_expand("~/Code/bet-2020/data/"))
@@ -35,13 +37,15 @@ for (i in seq_along(hm$mid)) {
   path <- path(race_dir, glue("{hm$race[i]}.csv"))
   # get the last 24 hours of data
   market_history(hm$mid[i], hourly = TRUE) %>%
+    # add contract id
+    inner_join(contracts) %>%
+    relocate(cid, .before = contract) %>%
     # add unique race code
     mutate(race = hm$race[i], .before = mid) %>%
-    select(-market) %>%
     # append to existing file
     write_csv(path, append = file_exists(path))
   # wait a random time
-  Sys.sleep(runif(1, 20, 30)); gc()
+  Sys.sleep(runif(1, 20, 30)); invisible(gc())
 }
 
 # 'Who will control the House after 2020?'
@@ -79,9 +83,10 @@ for (i in seq_along(sm$mid)) {
   path <- path(race_dir, glue("{sm$race[i]}.csv"))
   market_history(sm$mid[i], hourly = TRUE) %>%
     mutate(race = sm$race[i], .before = mid) %>%
-    select(-market) %>%
+    inner_join(contracts) %>%
+    relocate(cid, .before = contract) %>%
     write_csv(path, append = file_exists(path))
-  Sys.sleep(runif(1, 20, 30))
+  Sys.sleep(runif(1, 20, 30)); invisible(gc())
 }
 
 # 'Who will control the Senate after 2020?'
@@ -123,9 +128,10 @@ for (i in seq_along(pm$mid)) {
   path <- path(race_dir, glue("{pm$race[i]}.csv"))
   market_history(pm$mid[[i]], hourly = TRUE) %>%
     mutate(race = pm$race[i], .before = mid) %>%
-    select(-market) %>%
+    inner_join(contracts) %>%
+    relocate(cid, .before = contract) %>%
     write_csv(path, append = file_exists(path))
-  Sys.sleep(runif(1, 20, 30))
+  Sys.sleep(runif(1, 20, 30)); invisible(gc())
 }
 
 # 'Which party wins the Presidency in 2020?'
@@ -153,4 +159,4 @@ message(paste(nrow(pm) + 3, "potus markets complete", format(now(), "%H:%M")))
 # -------------------------------------------------------------------------
 
 # note end time in log
-message(glue("# Complete: {date()} -----------------------"))
+message(glue("# Complete: {date()}"))
