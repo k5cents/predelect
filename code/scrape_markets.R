@@ -38,7 +38,7 @@ for (i in seq_along(hm$mid)) {
   # get the last 24 hours of data
   market_history(hm$mid[i], hourly = TRUE) %>%
     # add contract id
-    inner_join(contracts) %>%
+    inner_join(contracts, by = c("mid", "contract")) %>%
     relocate(cid, .before = contract) %>%
     # add unique race code
     mutate(race = hm$race[i], .before = mid) %>%
@@ -83,7 +83,7 @@ for (i in seq_along(sm$mid)) {
   path <- path(race_dir, glue("{sm$race[i]}.csv"))
   market_history(sm$mid[i], hourly = TRUE) %>%
     mutate(race = sm$race[i], .before = mid) %>%
-    inner_join(contracts) %>%
+    inner_join(contracts, by = c("mid", "contract")) %>%
     relocate(cid, .before = contract) %>%
     write_csv(path, append = file_exists(path))
   Sys.sleep(runif(1, 20, 30)); invisible(gc())
@@ -128,7 +128,7 @@ for (i in seq_along(pm$mid)) {
   path <- path(race_dir, glue("{pm$race[i]}.csv"))
   market_history(pm$mid[[i]], hourly = TRUE) %>%
     mutate(race = pm$race[i], .before = mid) %>%
-    inner_join(contracts) %>%
+    inner_join(contracts, by = c("mid", "contract")) %>%
     relocate(cid, .before = contract) %>%
     write_csv(path, append = file_exists(path))
   Sys.sleep(runif(1, 20, 30)); invisible(gc())
