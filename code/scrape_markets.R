@@ -9,7 +9,7 @@ pacman::p_load(readr, dplyr, tidyr, stringr, lubridate, here, fs, glue)
 pacman::p_load_gh("kiernann/predictr")
 
 # note start time in log
-message(glue("# Begin:    {date()} -----------------------"))
+message(glue("# Begin:    {date()} -------------------"))
 Sys.sleep(60)
 # get all markets once
 all_markets <- open_markets(nest = FALSE)
