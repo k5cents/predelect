@@ -24,15 +24,15 @@ after 11:00 PM ET.
 
 As of July 4th 2020, there were **89** individual race markets being tracked.
 
-Each day's prices were appeneded to a comma-separated text file, with 1 row 
+Each day's prices were appended to a comma-separated text file, with 1 row 
 _per contract_ per hour. The markets tracked were from three categories:
 
 ### Presidential
 
-1. [2721]: Which party will win the U.S. presidential election?
-2. [6653]: What will be the Electoral College margin? 
-3. [6663]: What will be the popular vote margin?
-4. [5544]: Individual markets for every state (e.g, Florida)
+1. Which party will win the U.S. presidential election? ([2721])
+2. What will be the Electoral College margin?  ([6653])
+3. What will be the popular vote margin? ([6663])
+4. Individual markets for every state (e.g, Florida) ([5544])
 
 [2721]: https://www.predictit.org/markets/detail/2721/
 [6653]: https://www.predictit.org/markets/detail/6653/
@@ -41,10 +41,10 @@ _per contract_ per hour. The markets tracked were from three categories:
 
 ### Senate
 
-1. [4366]: Which party will control the Senate after the election?
-2. [6670]: What will be the net change in seats, by party?
-3. [6737]: Which race will be won by the smallest margin?
-4. [5811]: Individual markets for most races (e.g., Maine class II)
+1. Which party will control the Senate after the election? ([4366])
+2. What will be the net change in seats, by party? ([6670])
+3. Which race will be won by the smallest margin? ([6737])
+4. Individual markets for most races (e.g., Maine class II) ([5811])
 
 [4366]: https://www.predictit.org/markets/detail/4366/
 [6670]: https://www.predictit.org/markets/detail/6670/
@@ -53,9 +53,9 @@ _per contract_ per hour. The markets tracked were from three categories:
 
 ### House
 
-1. [4365]: Which party will control the House after 2020 election?
-2. [6669]: How many seats will Democrats win?
-3. [6753]: Individual markets for some races (e.g., South Carolina 1st)
+1. Which party will control the House after 2020 election? ([4365])
+2. How many seats will Democrats win? ([6669])
+3. Individual markets for some races (e.g., South Carolina 1st) ([6753])
 
 [4365]: https://www.predictit.org/markets/detail/4365/
 [6669]: https://www.predictit.org/markets/detail/6669/
@@ -70,8 +70,8 @@ returned on December 17, 2018.
 
 Each of the markets in 2018 focused on a single House or Senate election:
 
-1. [2918]: Will Elizabeth Warren be re-elected?
-2. [3450]: Will Pelosi be re-elected?
+1. Will Elizabeth Warren be re-elected? ([2918])
+2. Will Pelosi be re-elected? ([3450])
 
 [2918]: https://www.predictit.org/markets/detail/2918/
 [3450]: https://www.predictit.org/markets/detail/3450/
@@ -84,10 +84,10 @@ markets was submitted on October 17, 2018 and data was returned on November 3,
 
 Markets in 2016 focused on either party control or a single election:
 
-1. [1250]: Will the GOP control both Congress and the White House after 2016?
-2. [2157]: Individual markets for some races (e.g., Louisiana senate race)
+1. Will the GOP control both Congress and the White House after 2016? ([1250])
+2. Individual markets for some races (e.g., Louisiana senate race) ([2157])
 
 [1250]: https://www.predictit.org/markets/detail/1250/
 [2157]: https://www.predictit.org/markets/detail/2157/
 
-Suplementary 90-day price history for Presidental markets was saved in 2022.
+Supplementary 90-day price history for Presidential markets was save in 2022.
