@@ -1,7 +1,5 @@
-# About
-
-This repository is an effort to track the 2020 general election via the
-prediction markets at [PredictIt.org][pi]. 
+This repository is an effort to save hourly electoral prediction data from the 
+information markets at [PredictIt.org][pi]. 
 
 We can quantify odds over time by scraping the [market's API][api] every day
 and creating a database of hourly prices.
@@ -9,7 +7,25 @@ and creating a database of hourly prices.
 [pi]: https://www.predictit.org/
 [api]:https://www.predictit.org/api/marketdata/all/
 
-We are tracking individual and general _election_ markets in three categories:
+# 2022
+
+During 2022, the 24-hour price history of various markets was saved each day 
+after 11:00 PM ET.
+
+The JSON file returned for each request was saved to a separate file.
+
+# 2020
+
+During 2020, the 24-hour price history of various markets was saved each day 
+after 11:00 PM ET.
+
+[rlang]: https://www.r-project.org/
+[predictr]: https://github.com/kiernann/predictr
+
+As of July 4th 2020, there were **89** individual race markets being tracked.
+
+Each day's prices were appeneded to a comma-separated text file, with 1 row 
+_per contract_ per hour. The markets tracked were from three categories:
 
 ### Presidential
 
@@ -45,36 +61,33 @@ We are tracking individual and general _election_ markets in three categories:
 [6669]: https://www.predictit.org/markets/detail/6669/
 [6753]: https://www.predictit.org/markets/detail/6753/
 
-# Code
+# 2018
 
-Scraping is done with the [R language][rlang] and custom [predictr] package.
+Historical daily price data for the 2018 midterm elections was provided by
+PredictIt as part of an academic research agreement. A list of **120** 
+congressional election markets was submitted on November 4, 2018 and data was 
+returned on December 17, 2018. 
 
-[rlang]: https://www.r-project.org/
-[predictr]: https://github.com/kiernann/predictr
+Each of the markets in 2018 focused on a single House or Senate election:
 
-# Data
+1. [2918]: Will Elizabeth Warren be re-elected?
+2. [3450]: Will Pelosi be re-elected?
 
-The 24 hour history of each of these markets is scraped every day at noon EST.
+[2918]: https://www.predictit.org/markets/detail/2918/
+[3450]: https://www.predictit.org/markets/detail/3450/
 
-As of July 4th, there are 89 individual race markets being tracked.
+# 2016
 
-Each day's prices are saved in a comma-separated text file, with 1 row per
-_contract_ per hour with 10 variables:
+Historical data for elections in 2016 were similarly provided. A list of **34** 
+markets was submitted on October 17, 2018 and data was returned on November 3, 
+2018.
 
-01. `time`: Day and hour of price
-02. `race`: Unique 4-character race code:
-    * CA-25 – California 25th district House race
-    * ME-S2 – Maine class II regular Senate race
-    * GA-S3 – Georgia class III special Senate race
-    * FL-P0 – Florida at-large Presidential race
-    * NE-P2 – Nebraska 2nd district Presidential race
-03. `mid`: Uniqe market ID
-04. `cid`: Uniqe contract ID
-05. `contract`: Contract name (party)
-06. `open`: Opening contract price at hour
-07. `high`: High price
-08. `low`: Low price
-09. `close`: Closing price
-10. `volume`: Shares traded
+Markets in 2016 focused on either party control or a single election:
 
-Historical data is not hosted on GitHub but can be made availabe upon request.
+1. [1250]: Will the GOP control both Congress and the White House after 2016?
+2. [2157]: Individual markets for some races (e.g., Louisiana senate race)
+
+[1250]: https://www.predictit.org/markets/detail/1250/
+[2157]: https://www.predictit.org/markets/detail/2157/
+
+Suplementary 90-day price history for Presidental markets was saved in 2022.
